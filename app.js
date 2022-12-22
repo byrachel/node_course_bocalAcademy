@@ -1,6 +1,4 @@
-const http = require("http");
-const server = http.createServer((req, res) => {
-
+function handleRequest(req, res) {
     const path = req.url;
     const method = req.method;
 
@@ -11,6 +9,7 @@ const server = http.createServer((req, res) => {
             "Content-Length": responseBody.length
         });
         res.end(responseBody);
+        return;
     } else if( path === "/convert/temperature" && method === "POST") {
         const body = [];
         let result = null;
@@ -21,7 +20,6 @@ const server = http.createServer((req, res) => {
 
         req.on("end", () => {
             const data = JSON.parse(body);
-            console.log("DATA", data)
 
             if(data.convertTo === "farenheit" && data.unit === 'celcius') {
                 result = (data.value * 9/5) + 32
@@ -29,11 +27,10 @@ const server = http.createServer((req, res) => {
                 result = (data.value - 32) * 5/9
             }
             if(result) {
-                const responseBody = JSON.stringify({result :  result, unit: data.convertTo });
                 res.writeHead(200, {
                     "Content-Type": "application/json",
-                    "Content-Length": responseBody.length
                 });
+                const responseBody = JSON.stringify({result :  result, unit: data.convertTo });
                 res.end(responseBody);
             } else {
                 const responseBody = JSON.stringify({message: 'Erreur' });
@@ -42,7 +39,5 @@ const server = http.createServer((req, res) => {
             }
         });
     }
-
-});
-const port = process.env.PORT || 3000;
-server.listen(port);
+}
+module.exports = handleRequest;
