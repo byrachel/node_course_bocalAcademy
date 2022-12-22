@@ -3,7 +3,7 @@ function handleRequest(req, res) {
     const method = req.method;
 
     if(path === "/units" && method === "GET") {
-        const responseBody = JSON.stringify({temperature: ["celcius", "farenheit"] });
+        const responseBody = JSON.stringify({temperature: ["celsius", "farenheit"] });
         res.writeHead(200, {
             "Content-Type": "application/json",
             "Content-Length": responseBody.length
@@ -21,21 +21,18 @@ function handleRequest(req, res) {
         req.on("end", () => {
             const data = JSON.parse(body);
 
-            if(data.convertTo === "farenheit" && data.unit === 'celcius') {
+            if(data.convertTo === "farenheit" && data.unit === 'celsius') {
                 result = (data.value * 9/5) + 32
-            } else if(data.convertTo === "celcius" && data.unit === 'farenheit')  {
+            } else if(data.convertTo === "celsius" && data.unit === 'farenheit')  {
                 result = (data.value - 32) * 5/9
             }
             if(result) {
-                res.writeHead(200, {
-                    "Content-Type": "application/json",
-                });
-                const responseBody = JSON.stringify({result :  result, unit: data.convertTo });
+                res.writeHead(200, { "Content-Type": "application/json" });
+                const responseBody = JSON.stringify({result, unit: data.convertTo });
                 res.end(responseBody);
             } else {
-                const responseBody = JSON.stringify({message: 'Erreur' });
-                res.writeHead(404, {});
-                res.end(responseBody);
+                res.writeHead(404, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({message: 'Erreur, les données ne sont pas exploitables.' }));
             }
         });
     }
