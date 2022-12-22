@@ -1,0 +1,22 @@
+{
+  "name": "nodeserver",
+  "version": "1.0.0",
+  "description": "Atelier Node Server - conversion de températures",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/byrachel/node_course_bocalAcademy.git"
+  },
+  "author": "Rachel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/byrachel/node_course_bocalAcademy/issues"
+  },
+  "homepage": "https://github.com/byrachel/node_course_bocalAcademy#readme",
+  "dependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
